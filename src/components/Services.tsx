@@ -1,75 +1,133 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Palette, Camera, Share2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Services = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const services = [
     {
       icon: Code,
-      title: "Custom Website Development",
-      description: "Bespoke websites built with cutting-edge technology, optimized for performance and user experience.",
-      features: ["Responsive Design", "SEO Optimized", "Fast Loading", "Mobile-First"]
+      title: "Digital Architecture",
+      subtitle: "Custom Website Development",
+      description: "We don't build websites. We architect digital experiences that convert visitors into customers and browsers into believers.",
+      features: ["AI-Powered UX", "Lightning Performance", "Future-Proof Code", "Conversion Optimized"],
+      conversational: "Think of us as your digital architects—every line of code serves a purpose, every animation tells a story."
     },
     {
       icon: Palette,
-      title: "Brand Identity Design",
-      description: "Complete branding solutions that capture your essence and resonate with your target audience.",
-      features: ["Logo Design", "Brand Guidelines", "Visual Identity", "Print Materials"]
+      title: "Brand Alchemy",
+      subtitle: "Identity & Visual Design",
+      description: "Your brand isn't just a logo—it's the emotional connection between you and your customers. We make that connection unforgettable.",
+      features: ["Psychological Design", "Global Appeal", "Timeless Aesthetics", "Brand Psychology"],
+      conversational: "We study what makes people remember, what makes them trust, what makes them choose you over everyone else."
     },
     {
       icon: Share2,
-      title: "Social Media Strategy",
-      description: "Data-driven social media campaigns that build community and drive meaningful engagement.",
-      features: ["Content Strategy", "Community Management", "Analytics", "Paid Advertising"]
+      title: "Social Mastery",
+      subtitle: "Strategic Digital Presence",
+      description: "Social media isn't about posting—it's about creating movements. We turn your audience into your community, your community into your advocates.",
+      features: ["Viral Strategy", "Community Building", "Data-Driven Content", "Global Reach"],
+      conversational: "We don't just manage social media. We orchestrate digital conversations that matter."
     },
     {
       icon: Camera,
-      title: "Professional Photography",
-      description: "Stunning visuals that tell your story and showcase your products in the best possible light.",
-      features: ["Product Photography", "Brand Photography", "Event Coverage", "Post-Production"]
+      title: "Visual Storytelling",
+      subtitle: "Professional Photography",
+      description: "Every image we capture tells your story before you say a word. We create visuals that stop scrolls and start conversations.",
+      features: ["Cinematic Quality", "Brand-Aligned", "Multi-Platform", "Story-Driven"],
+      conversational: "Our cameras don't just capture moments—they capture the essence of what makes your business extraordinary."
     }
   ];
 
   return (
-    <section className="py-24 bg-secondary/30" id="services">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Our
-            <span className="gradient-primary bg-clip-text text-transparent"> Services</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive digital solutions designed to transform your business and amplify your brand presence.
-          </p>
+    <section className="py-32 relative overflow-hidden" id="services">
+      {/* Parallax Background Elements */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+      >
+        <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full gradient-glass animate-glass-shimmer"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full glass-dark animate-parallax-float"></div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-20">
+          <div className="glass rounded-3xl p-8 max-w-4xl mx-auto mb-8">
+            <h2 className="text-5xl md:text-6xl font-light mb-6 text-foreground">
+              We don't do
+              <span className="font-bold gradient-accent bg-clip-text text-transparent"> ordinary</span>
+            </h2>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              While others build websites, we architect digital empires. While others design logos, 
+              we craft legacies. Here's how we transform businesses into phenomena.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {services.map((service, index) => {
             const Icon = service.icon;
+            const parallaxOffset = (index % 2 === 0 ? 0.1 : -0.1) * scrollY;
+            
             return (
               <Card 
                 key={service.title}
-                className="group hover:shadow-elegant transition-all duration-500 hover:-translate-y-2 border-border/50 backdrop-blur-sm bg-card/80"
+                className="group glass-subtle border-border/20 transition-glass hover:glass hover:shadow-glass hover:-translate-y-2 rounded-3xl overflow-hidden"
                 style={{
-                  animationDelay: `${index * 0.1}s`
+                  transform: `translateY(${parallaxOffset}px)`,
+                  animationDelay: `${index * 0.15}s`
                 }}
               >
-                <CardHeader>
-                  <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:animate-float">
-                    <Icon className="w-6 h-6 text-primary-foreground" />
+                <CardHeader className="relative p-8">
+                  {/* Icon */}
+                  <div className="w-16 h-16 gradient-accent rounded-2xl flex items-center justify-center mb-6 group-hover:animate-float relative z-10">
+                    <Icon className="w-8 h-8 text-white" />
                   </div>
-                  <CardTitle className="text-2xl mb-2 group-hover:text-primary transition-colors">
-                    {service.title}
-                  </CardTitle>
+                  
+                  {/* Titles */}
+                  <div className="space-y-2">
+                    <p className="text-accent font-medium text-sm uppercase tracking-wider">
+                      {service.subtitle}
+                    </p>
+                    <CardTitle className="text-3xl group-hover:text-accent transition-colors font-light">
+                      {service.title}
+                    </CardTitle>
+                  </div>
+                  
+                  {/* Floating decoration */}
+                  <div className="absolute top-4 right-4 w-20 h-20 gradient-glass rounded-full opacity-20 group-hover:animate-rotate-3d"></div>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                
+                <CardContent className="p-8 pt-0">
+                  {/* Main Description */}
+                  <p className="text-muted-foreground mb-6 leading-relaxed text-lg">
                     {service.description}
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
+                  
+                  {/* Conversational Insight */}
+                  <div className="glass-dark rounded-2xl p-4 mb-6">
+                    <p className="text-sm text-white/90 italic leading-relaxed">
+                      "{service.conversational}"
+                    </p>
+                  </div>
+                  
+                  {/* Features */}
+                  <div className="grid grid-cols-2 gap-3">
                     {service.features.map((feature) => (
-                      <div key={feature} className="flex items-center text-sm">
-                        <div className="w-1.5 h-1.5 gradient-accent rounded-full mr-2 flex-shrink-0"></div>
-                        <span className="text-muted-foreground">{feature}</span>
+                      <div key={feature} className="flex items-center text-sm group">
+                        <div className="w-2 h-2 gradient-accent rounded-full mr-3 flex-shrink-0 group-hover:animate-pulse-glow"></div>
+                        <span className="text-muted-foreground group-hover:text-accent transition-colors">
+                          {feature}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -77,6 +135,18 @@ const Services = () => {
               </Card>
             );
           })}
+        </div>
+        
+        {/* Bottom CTA */}
+        <div className="text-center mt-20">
+          <div className="glass rounded-3xl p-8 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground mb-4">
+              Ready to see what extraordinary looks like?
+            </p>
+            <p className="text-accent font-medium">
+              Let's create something the world has never seen before.
+            </p>
+          </div>
         </div>
       </div>
     </section>
