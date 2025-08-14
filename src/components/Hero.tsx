@@ -1,15 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
 import Scene3D from "./Scene3D";
+import { useScrollGradient } from "@/hooks/use-scroll-gradient";
 
 const Hero = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollY, getGradientStyle, getParallaxOffset } = useScrollGradient();
 
   return (
     <section className="min-h-screen relative overflow-hidden gradient-hero">
@@ -22,7 +16,7 @@ const Hero = () => {
       <div 
         className="absolute inset-0 z-10"
         style={{
-          transform: `translateY(${scrollY * 0.5}px)`,
+          transform: `translateY(${getParallaxOffset(0.5)}px)`,
         }}
       >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full gradient-glass opacity-20 animate-parallax-float"></div>
@@ -36,7 +30,7 @@ const Hero = () => {
       <div 
         className="relative z-30 min-h-screen flex items-center justify-center"
         style={{
-          transform: `translateY(${scrollY * -0.3}px)`,
+          transform: `translateY(${getParallaxOffset(-0.3)}px)`,
         }}
       >
         <div className="container mx-auto px-6 text-center">
@@ -45,7 +39,10 @@ const Hero = () => {
             <div className="mb-8 animate-fade-in">
               <h1 className="text-6xl md:text-8xl font-light text-white mb-4 tracking-tight">
                 We don't just build
-                <span className="block font-bold gradient-accent bg-clip-text text-transparent">
+                <span 
+                  className="block font-bold"
+                  style={getGradientStyle(210, 80)}
+                >
                   We architect dreams
                 </span>
               </h1>

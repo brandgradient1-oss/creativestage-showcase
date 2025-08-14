@@ -1,15 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Palette, Camera, Share2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useScrollGradient } from "@/hooks/use-scroll-gradient";
 
 const Services = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollY, getGradientStyle, getParallaxOffset } = useScrollGradient();
 
   const services = [
     {
@@ -51,7 +45,7 @@ const Services = () => {
       {/* Parallax Background Elements */}
       <div 
         className="absolute inset-0 opacity-30"
-        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+        style={{ transform: `translateY(${getParallaxOffset(0.2)}px)` }}
       >
         <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full gradient-glass animate-glass-shimmer"></div>
         <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full glass-dark animate-parallax-float"></div>
@@ -63,7 +57,10 @@ const Services = () => {
           <div className="glass rounded-3xl p-8 max-w-4xl mx-auto mb-8">
             <h2 className="text-5xl md:text-6xl font-light mb-6 text-foreground">
               We don't do
-              <span className="font-bold gradient-accent bg-clip-text text-transparent"> ordinary</span>
+              <span 
+                className="font-bold"
+                style={getGradientStyle(240, 100)}
+              > ordinary</span>
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
               While others build websites, we architect digital empires. While others design logos, 
@@ -76,7 +73,7 @@ const Services = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {services.map((service, index) => {
             const Icon = service.icon;
-            const parallaxOffset = (index % 2 === 0 ? 0.1 : -0.1) * scrollY;
+            const parallaxOffset = getParallaxOffset(index % 2 === 0 ? 0.1 : -0.1);
             
             return (
               <Card 
